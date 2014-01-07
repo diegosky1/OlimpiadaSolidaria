@@ -1,0 +1,60 @@
+<div class="container">
+	<%= render partial: 'shared/form_errors', locals: { target: @user } %>
+	<%= form_for @user, html: { :class => 'form-horizontal', role: 'form' } do |f| %>
+		<h1>Registro</h1>
+		<div class="form-group">
+			<%= f.label :name, 'Nombre', :class => 'control-label col-sm-2' %>
+			<div class="col-sm-6">
+				<%= f.text_field :name, placeholder: "Nombre", :class => 'form-control' %>
+			</div>
+		</div>
+		<div class="form-group">
+			<%= f.label :surname, 'Apellido', :class => 'control-label col-sm-2' %>
+			<div class="col-sm-6">
+				<%= f.text_field :surname, placeholder: "Apellido", :class => 'form-control' %>
+			</div>
+		</div>		
+		<div class="form-group">
+			<%= f.label :email, 'Email', :class => 'control-label col-sm-2' %>
+			<div class="col-sm-6">
+				<%= f.text_field :email, placeholder: "Email", :class => 'form-control' %>
+			</div>
+		</div>
+		<div class="form-group">
+			<%= f.label :university_id, 'Universidad', :class => 'control-label col-sm-2' %>
+			<div class="col-sm-6">
+				<%= f.select :university_id, options_from_collection_for_select(@universities,'id','name'), { prompt: true },:class => 'form-control' %>
+			</div>
+		</div>
+		<div class="form-group">
+			<%= f.label :age, 'Edad', :class => 'control-label col-sm-2' %>
+			<div class="col-sm-6">
+				<%= f.text_field :age, placeholder: "Edad", :class => 'form-control' %>
+			</div>
+		</div>
+		<div class="form-group">
+			<%= f.label :gender, 'Sexo', :class => 'control-label col-sm-2' %>
+			<div class="col-sm-6">
+				<%= f.select :gender, gender_options, { prompt: true }, :class => 'form-control' %>
+			</div>
+		</div>
+		<div class="form-group">
+			<%= f.label :password, 'Password', :class => 'control-label col-sm-2' %>
+			<div class="col-sm-6">
+				<%= f.password_field :password, placeholder: "Password", :class => 'form-control' %>
+			</div>
+		</div>
+		<div class="form-group">
+			<%= f.label :password_confirmation, 'Confirmar Password', :class => 'control-label col-sm-2' %>
+			<div class="col-sm-6">
+				<%= f.password_field :password_confirmation, placeholder: "Confirmar Password", :class => 'form-control' %>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6 col-sm-offset-2">
+				<%= f.submit 'Crear mi cuenta', :class => 'btn btn-primary btn-lg btn-block' %>
+			</div>
+		</div>
+		
+	<% end %>
+</div>

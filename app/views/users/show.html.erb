@@ -1,0 +1,269 @@
+<script type="text/javascript">
+	$(function(){
+		$('[data-toggle="tooltip"]').tooltip();
+		$('#hours-chart-container').highcharts({
+			chart: {
+				type: 'column'
+			},
+			title: {
+				text: null
+			},
+			 credits: {
+                enabled: false  
+            },
+            legend: {
+               enabled: false// quita el label de los series
+            },
+			xAxis: {
+				categories: <%= @daily_sessions.map { |session| date_with_short_month(session.created_at) }.to_json.html_safe %>
+			},			
+			yAxis: {
+				title: {
+					text: 'Tiempo (h)'
+				}
+			},
+			series: [
+				{
+					name: "Horas de estudio",
+					data: <%= @daily_sessions.map { |session| session.hours }.to_json.html_safe %>
+				}
+			]
+
+		});
+
+		$('#money-chart-container').highcharts({
+			chart: {
+				type: 'line'
+			},
+			title: {
+				text: null
+			},
+			 credits: {
+                enabled: false  
+            },
+            legend: {
+               enabled: false// quita el label de los series
+            },
+			xAxis: {
+				categories: <%= Date::ABBR_MONTHNAMES[1..12].to_json.html_safe %>
+			},
+			yAxis: {
+				title: {
+					text: 'Cantidad ($)'
+				}
+			},
+			plotOptions: {
+	            series: {
+	                color: '#FFD700'
+	            }
+            },
+			tooltip: {
+				formatter: function() {
+					return this.x + ': ' + '$' + Highcharts.numberFormat(this.y,2);
+				}
+			},
+			series: [
+				{
+					name: "Cantidad aportada",
+					data: <%= @monthly_hours.to_json.html_safe %>
+				}
+			]
+
+		});
+
+
+    $('#pie-pie-container').highcharts({
+        chart: {
+            plotBackgroundColor: null,
+	        plotBorderWidth: 0,
+	        plotShadow: false
+        },
+        title: {
+            text: null
+        },
+        tooltip: {
+    	    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        credits: {
+                enabled: false  
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    color: '#000000',
+                    connectorColor: '#018E0E',
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                }
+            }
+        },
+        series: [{
+	            type: 'pie',
+	            name: 'Aporte total',
+	            innerSize: '50%',
+	            data: <%= [[@user.full_name,@user.total_hours],[@user.university.name, @user.university.total_hours - @user.total_hours]].to_json.html_safe %>
+
+	            
+	        }],
+	     colors: [
+               '#018E0E', 
+			   '#005C09'
+	     ]
+        });
+
+
+	});
+</script>
+<div class="container">
+	<div class="page-header">
+		<div class="pull-left">
+			<h1><%= @user.full_name %></h1>
+		</div>		
+		<div class="pull-right space-top">
+			<% if @user.id.eql? @current_user.id %>
+				<% klass = Library.is_open? ? '' : 'disabled' %>
+				<div class="text-right">		
+					<%= link_to 'Registrar horas', '#', :class => "btn btn-primary #{klass}", data: {toggle: 'modal', target: '#study-session-form'} %>	
+				</div>
+			<% else %>
+				<%= render partial: 'shared/follow_actions', locals: { user: @user } %>
+			<% end %>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	<div class="row">
+		 <div class="col-sm-6">
+			<div class="panel panel-default">
+			  <div class="panel-heading">
+			    <h3 class="panel-title">
+			    	 <%= image_tag 'lentes1.png' %> Datos de participante
+			    </h3>
+			  </div>
+			  <div class="panel-body"> 
+
+
+		 		<ul class="list-inline">
+		 		  <li><%= image_tag @user.avatar.url, :class => 'img-rounded' %> </li><!-- <img  data-src="holder.js/250x250" alt="..."> -->  
+				
+                	<li>
+                		<ul class="list-unstyled">
+	                		<li>	                
+	                			 <span class="label label-primary">Total de hrs. estudiadas: <%= @user.total_hours %></span>
+	                        </li>
+							<li>
+								<span class="label label-success">Dinero total donado: $<%= @user.total_hours * 20 %></span>
+							</li>
+							<li>
+								<span class="label label-info">Info</span>
+							</li>
+							<li>
+								<span class="label label-warning">Warning</span>
+							</li>
+						</ul>   
+                	</li>
+                </ul>
+
+                <h3>Top ten</h3>                
+                <ul class="list-inline" >
+					<% @top_users.each_with_index do |user,index| %>
+	            		<li>
+	            			<%= link_to user_url(user), title: "#{index+1}. #{user.full_name}", data: { toggle: 'tooltip' } do %>
+	            				<%= image_tag user.avatar.thumb.url, :class => 'img-circle' %>
+	            			<% end %>
+	            		</li>
+	            	<% end %>
+                </ul>
+            	
+                
+
+			  </div>
+			</div>
+		 </div>
+		<div class="col-sm-6">
+			<div class="panel panel-info "> 
+			   <div class="panel-heading">  
+			     <h3 class="panel-title"> <%= image_tag 'relojarena1.png'%> Registro de horas</h3>  
+			   </div>
+			   <div class="panel-body">
+	              <div id="hours-chart-container"></div> 
+			   </div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row space-top">
+         <div class="col-sm-6">
+			<div class="panel panel-warning"> 
+			   <div class="panel-heading">  
+			     <h3 class="panel-title"><%= image_tag 'monedas1.png'%> Valor aportado a la causa</h3>  
+			   </div>
+			   <div class="panel-body">
+	              <div id="money-chart-container"></div> 
+			   </div>
+			</div>
+		 </div>
+
+         <div class="col-sm-6">
+            <div class="panel panel-success"> 
+			   <div class="panel-heading">  
+			     <h3 class="panel-title"><%= image_tag 'lapiz1.png'%> Aporte de estudio en tu universidad</h3>  
+			   </div>
+			   <div class="panel-body">
+	              <div id="pie-pie-container"></div>
+			   </div>
+			</div>
+		 </div>
+	</div>
+	
+	<% if @user.study_sessions.any? %>
+		<h2>Sesiones estudio</h2>
+		<table class="table-striped table">
+			<thead>
+				<tr>
+					<th>Fecha</th>
+					<th>Horas</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% @user.study_sessions.each do |study_session| %>
+					<tr>
+						<td><%= date_slash_format(study_session.created_at) %></td>
+						<td><%= study_session.hours %></td>
+					</tr>
+				<% end %>
+			</tbody>
+		</table>
+	<% else %>
+		<p class="well">
+			No has registrado horas de estudio
+		</p>
+	<% end %>
+	
+	
+</div>
+
+<% if Library.is_open? %>
+	<div id="study-session-form" tabindex="-1" class="modal fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">&iquest;Cu&aacute;ntas horas has estudiado hoy?</h4>
+				</div>
+			<div class="modal-body">
+				<%= form_for [@current_user, @current_user.study_sessions.build] do |f| %>
+					<div class="form-group">
+						<%= f.number_field :hours, placeholder: "Horas", :class => 'form-control' %>
+					</div>
+					<div class="form-group">
+						<%= f.submit 'Registrar', :class => 'btn btn-primary btn-lg btn-block' %>		
+					</div>				
+				<% end %>
+			</div>
+			</div>
+		</div>
+
+	</div>
+<% end %>

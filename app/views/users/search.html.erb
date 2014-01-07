@@ -1,0 +1,33 @@
+<div class="container">
+	<h1>Resultados para <%= "\"#{@query}\"" %></h1>
+	<% if @users.any? %>
+	<table class="table table-stripped space-top">
+		<thead>
+			<tr>
+				<th>Nombre</th>
+				<th>Universidad</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<% @users.each do |user| %>
+				<tr>
+					<td>
+						<%= link_to user_url(user), :class => 'no-decoration' do %>
+							<%= image_tag user.avatar.thumb.url, :class => 'img-circle' %> <span class="space-left"> <%= user.full_name %></span>
+						<% end %>
+					</td>
+					<td><%= user.university.name %></td>
+					<td>
+						<%= render partial: 'shared/follow_actions', locals: { user: user } %>
+					</td>
+				</tr>
+			<% end %>
+		</tbody>
+	</table>
+	<% else %>
+		<p class="well">
+			No se encontraron resultados
+		</p>
+	<% end %>
+</div>

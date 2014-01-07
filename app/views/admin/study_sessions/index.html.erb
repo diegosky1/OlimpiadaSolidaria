@@ -1,0 +1,37 @@
+<div class="page-header">
+	<h1>Sesiones de estudio</h1>
+</div>
+
+<% if @study_sessions.any? %>
+	<table class="table-striped table">
+		<thead>
+			<tr>
+				<th>Fecha</th>
+				<th>Horas</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<% @study_sessions.each do |study_session| %>
+				<tr>
+					<td><%= date_slash_format(study_session.created_at) %></td>
+					<td><%= study_session.hours %></td>
+					<td>
+						<%= link_to 'Editar', edit_admin_user_study_session_url(@user, study_session), :class => 'btn btn-default btn-xs' %>
+						<%= link_to 'Eliminar', admin_user_study_session_url(@user, study_session), :class => 'btn btn-danger btn-xs',
+							data: {
+								confirm: '¿Estas seguro?',
+								method: 'delete'
+							}
+						 %>
+					</td>
+				</tr>
+			<% end %>
+		</tbody>
+	</table>
+<% else %>
+	<p class="well">
+		No se han registrado horas de estudio
+	</p>
+<% end %>
+

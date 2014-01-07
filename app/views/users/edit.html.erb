@@ -1,0 +1,85 @@
+<div class="container">
+  <h1>Edita tu perfil</h1>
+  <%= render partial: 'shared/form_errors', locals: { target: @user } %>
+
+  <div class="row">
+    <div class="span6 offset3">
+      <%= form_for @user, html: { :class => 'form-horizontal', role: 'form' } do |f| %>
+
+        <div class="form-group">
+          <%= f.label :name,'Nombre', :class => 'control-label col-sm-2' %>
+          <div class="col-sm-5">
+            <%= f.text_field :name, :class => 'form-control'  %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :surname, 'Apellido', :class => 'control-label col-sm-2'  %>
+          <div class="col-sm-5">
+            <%= f.text_field :surname, :class => 'form-control' %>
+          </div>
+        </div>
+
+
+        <div class="form-group">
+          <%= f.label :email,'Email', :class => 'control-label col-sm-2'  %>
+          <div class="col-sm-5">
+            <%= f.text_field :email, :class => 'form-control' %>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <%= f.label :age, 'Edad', :class => 'control-label col-sm-2' %>
+          <div class="col-sm-5">
+            <%= f.text_field :age, placeholder: "Edad", :class => 'form-control' %>
+          </div>
+        </div>
+        
+
+        <div class="form-group">
+          <%= f.label :gender, 'Sexo', :class => 'control-label col-sm-2' %>
+          <div class="col-sm-5">
+            <%= f.select :gender, gender_options, { prompt: true }, :class => 'form-control' %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :password, 'Password', :class => 'control-label col-sm-2' %>
+          <div class="col-sm-5">
+            <%= f.password_field :password, :class => 'form-control' %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :password_confirmation, "Confirmar Password", :class => 'control-label col-sm-2' %>
+          <div class="col-sm-5">
+            <%= f.password_field :password_confirmation, :class => 'form-control' %>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <div class="col-sm-10 col-sm-offset-2">
+            <div class="pull-left">
+              <%= image_tag @user.avatar.thumb.url, :class => 'img-thumbnail'%> 
+            </div>
+            <div class="pull-left space-left">
+              <%= f.file_field :avatar %>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          
+        </div>
+
+        <div class="form-group">
+        <div class="col-sm-10 col-sm-offset-2">
+        <%= f.submit "Guardar cambios", class: "btn btn-large btn-primary" %>
+        </div>
+      </div>
+
+       
+
+      <% end %>
+
+    </div>
+  </div>
+</div>

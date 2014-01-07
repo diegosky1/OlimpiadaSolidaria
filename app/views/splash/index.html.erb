@@ -1,0 +1,175 @@
+ <script type="text/javascript">
+    $(function(){
+        $('#universities-chart-container').highcharts({
+            chart: {
+                type: 'column',
+                backgroundColor: 'transparent'
+
+            },
+            credits: {
+                enabled: false  
+            },
+            xAxis: {
+                //categories: ['Horas acumuladas']
+                categories: <%= @university_names.to_json.html_safe%>,
+            labels: {
+                rotation: 75
+              }
+            }, 
+            legend: {
+              enabled: false// quita el label de los series
+       
+            },         
+            yAxis: {
+                title: {
+                    text: 'Tiempo (h)'
+                }
+            },
+            plotOptions: {
+                    series: {
+                        colorByPoint: true
+                    }
+            },
+            title: {
+                 text: null  
+            },
+            tooltip: {
+                formatter: function() {
+                    return this.x + ': ' + this.y + 'hrs';
+                }
+            },
+            series: [
+
+                        {
+                            name:<%= @university_names.to_json.html_safe%>,
+                            data:<%= @university_index_chart.to_json.html_safe %>
+
+                        }
+
+                    ]
+
+        });
+        
+    });
+</script>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=330619083669658";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+<div id="splash-carousel" class="carousel slide" data-ride="carousel">
+	<ol class="carousel-indicators">
+		<li data-target="#splash-carousel" data-slide-to="0" class="active"></li>
+        <li data-target="#splash-carousel" data-slide-to="1"></li>
+ 		<li data-target="#splash-carousel" data-slide-to="2"></li>
+	</ol>
+  	<div class="carousel-inner">
+        <div class="item active">
+    		<%= image_tag 'http://lorempixel.com/1500/800/' %>
+        	<div class="carousel-caption">
+        		<h1>Uno</h1>
+        		<p>
+        			Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
+        		</p>
+        		<p>
+        			<%= link_to 'Reg&iacute;strate'.html_safe, new_user_url, :class => 'btn btn-info' %>
+        		</p>
+        	</div>
+        </div>
+        <div class="item">
+        	<%= image_tag 'http://lorempixel.com/1500/800/' %>
+        	<div class="carousel-caption">
+        		<h1>Dos</h1>
+        		<p>
+        			Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
+        		</p>
+        		<p>
+        			<%= link_to 'Reg&iacute;strate'.html_safe, new_user_url, :class => 'btn btn-info' %>
+        		</p>
+        	</div>
+        </div>
+        <div class="item">
+    		<%= image_tag 'http://lorempixel.com/1500/800/' %>
+        	<div class="carousel-caption">
+        		<h1>Tres</h1>
+        		<p>
+        			Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
+        		</p>
+        		<p>
+        			<%= link_to 'Reg&iacute;strate'.html_safe, new_user_url, :class => 'btn btn-info' %>
+        		</p>
+        	</div>
+        </div>
+    </div>
+	<a class="left carousel-control" href="#splash-carousel" data-slide="prev">
+		<span class="glyphicon glyphicon-chevron-left"></span>
+	</a>
+	<a class="right carousel-control" href="#splash-carousel" data-slide="next">
+		<span class="glyphicon glyphicon-chevron-right"></span>
+	</a>
+</div>
+<div class="white-section">
+    <div class="container">
+     <div class="caption">
+        <h1 class="thumb-heading text-center">Registrate, estudia y apoya</h1>
+        <p class="thumb-text lead">La Olimpiada Solidaria M&eacute;xico te permite ayudar a las comunidades de tu pa&iacute;s desde la comodidad de tu universidad.
+            <br>Solo <%= link_to 'Reg&iacute;strate'.html_safe, new_user_url, :class => 'btn btn-info btn-sm' %>, da de alta tus horas de estudio, y observa los resultados en cualquier dispositivo.
+        </p>
+
+        <section class="text-center">
+            <iframe width="450" height="250" src="//www.youtube.com/embed/ai7TQnJfJGY" frameborder="0" allowfullscreen></iframe>
+        </section>
+
+        
+     </div>
+     </div>
+</div>
+
+
+<div class="container sub-container">
+    <!--<hr class="featurette-divider" />-->
+    <div class="featurette row">
+        <div class="col-sm-5">
+            <h2 class="featurette-heading">Resultados al momento</h2>
+            <p class="lead">
+                Con tus horas de estudio, ayuda a que tu universidad sea la que más apoye a aquellos que como tú, también quieren salir adelante.
+
+            </p>
+        </div>
+        <div class="col-sm-7" id="universities-chart-container"></div>
+
+    </div>
+    <!--<hr class="featurette-divider" />-->
+</div>
+
+<div class="sub-container white-section">
+    <h2 class="sub-heading text-center">¡&Uacute;nete a las redes sociales!</h2>
+    <div class="row">
+        <div class="col-sm-6">
+          <div class="col-sm-11">
+            <div class="panel panel-default">
+                <h1 class="panel-title header-fb">Facebook</h1>
+              <div id="fb-container" class="panel-body">
+                <div class="fb-like-box" data-href="https://www.facebook.com/OlimpiadaSolidariadeEstudioMexico" data-width="430" data-height="410" data-colorscheme="light" data-show-faces="true" data-header="false" data-stream="true" data-show-border="false"></div>
+              </div>
+            </div>
+         </div>
+        </div>
+        <div class="col-sm-6">
+          <a class="twitter-timeline" href="https://twitter.com/OSE_Mexico" data-widget-id="338465585392390144">Tweets by @OSE_Mexico</a>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+

@@ -1,0 +1,13 @@
+<div class="container">
+<%= render partial: 'shared/form_errors', locals: { target: @university } %>
+<%= form_for [:master, @university], html: {role: 'form'} do |f| %>
+	<div class="form-group">
+		<%= f.label :name, 'Nombre' %>
+		<%= f.text_field :name, :class => 'form-control' %>
+	</div>
+	<div class="form-actions">
+		<%= f.submit 'Continuar', :class => 'btn btn-primary' %>
+		<%= link_to 'Cancelar', master_universities_url, :class => 'btn btn-default' %>
+	</div>
+<% end %>
+</div>

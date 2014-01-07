@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Olimpiada</title>
+  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+  <%= csrf_meta_tags %>
+  <%= viewport_meta_tag maximum_scale: "1.0" %>
+  <%= yield :head %>
+</head>
+<body>
+	<nav class="nav navbar-inverse" role="navigation">
+		<div class="navbar-header">
+		    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+		      <span class="sr-only">Toggle navigation</span>
+		      <span class="icon-bar"></span>
+		      <span class="icon-bar"></span>
+		      <span class="icon-bar"></span>
+		    </button>
+	    	<%= link_to 'Olimpiada Solidaria', root_url, :class => 'navbar-brand' %>
+	  	</div>		
+	  	<div class="collapse navbar-collapse" id="navbar-collapse">
+			<% if @current_user %>
+	         	<%= render_backend_nav(@current_user) %>
+	         <%else%>	         	
+	          	<ul class="nav navbar-nav navbar-right">
+			       	<li>				
+					   <%= link_to 'Iniciar sesi&oacute;n'.html_safe, '#', :class => 'navbar-brand', data: {toggle: 'modal', target: '#login-form'} %>						
+			  		</li>
+  				</ul>	  			
+			<%end%>	  	  	
+		</div>	
+	</nav>
+	<div id="login-form" tabindex="-1" class="modal fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  	<div class="modal-dialog"  id="login-dialog">
+	  		<div class="modal-content">
+	  			<div class="modal-header">
+	  				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        			<h4 class="modal-title">Iniciar sesi&oacute;n</h4>
+
+	  			</div>
+				<div class="modal-body">
+					<%= form_for :login, url: authenticate_url, html: {id: 'sign-in'} do |f| %>
+						<%= f.text_field :email, placeholder: "Email", :class => 'form-control' %>
+						<%= f.password_field :password, placeholder: "Password", :class => 'form-control' %>
+						<%= f.submit 'Login', :class => 'btn btn-primary btn-lg btn-block' %>			
+					<% end %>
+		  		</div>
+	  		</div>
+	  	</div>
+		
+	 </div>
+	<%= bootstrap_flash %>
+	
+	<%= yield %>
+	<footer>
+		<div class="container">
+			<p>
+				&copy; <%= Time.now.year %> Olimpiada Solidaria
+			</p>
+		</div>
+	</footer>
+</body>
+</html>

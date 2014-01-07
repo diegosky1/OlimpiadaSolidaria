@@ -1,0 +1,58 @@
+<div class="page-header">
+	<h1>Usuarios</h1>
+</div>
+
+<% if @users.any? %>
+	<div class="row">
+		<div class="col-sm-4 col-sm-offset-8">
+			<%= form_tag admin_users_url, role: 'form', method: 'get' do %>
+				<div class="input-group">
+				 	<%= text_field_tag :query, @query, :class => 'form-control', :placeholder => 'Busca por Nombre o Email' %> 
+				 	<span class="input-group-btn">
+				 		<%= submit_tag 'Buscar', :class => 'btn btn-primary' %>
+			  	 	</span>
+				</div>
+			<% end %>
+		</div>		
+	</div>
+	
+	<table class="table table-stripped space-top">
+		<thead>
+			<tr>
+				<th>Nombre</th>
+				<th>Email</th>
+				<th>Horas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% @users.each do |user| %>
+				<tr>
+					<td><%= link_to user.full_name, admin_user_study_sessions_url(user) %></td>
+					<td><%= user.email %></td>
+					<td><%= user.study_sessions.sum(:hours) %></td>
+				</tr>
+			<% end %>
+		</tbody>
+	</table>
+<% else %>
+    <div class="row">
+		<div class="col-sm-4 col-sm-offset-8">
+			<%= form_tag admin_users_url, role: 'form', method: 'get' do %>
+				<div class="input-group">
+				 	<%= text_field_tag :query, @query, :class => 'form-control', :placeholder => 'Busca por Nombre o Email' %> 
+				 	<span class="input-group-btn">
+				 		<%= submit_tag 'Buscar', :class => 'btn btn-primary' %>
+			  	 	</span>
+				</div>
+			<% end %>
+		</div>		
+	</div>
+	<p class="well space-top">
+		No se han encontrado estudiantes
+	</p>
+	<div class="form-group">
+		<div class="col-sm-offset-10 col-sm-2">
+	       <%= link_to 'Regresar', admin_users_url, :class => 'btn btn-default btn-block' %>
+        </div>
+    </div>
+<% end %>

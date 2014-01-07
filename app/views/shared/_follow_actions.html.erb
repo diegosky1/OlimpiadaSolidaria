@@ -1,0 +1,9 @@
+<% unless @current_user.follows?(user) %>
+	<%= form_tag follow_user_url(user) do %>
+		<%= submit_tag 'Seguir', :class => 'btn btn-default' %>
+	<% end %>
+<% else %>
+	<%= form_tag unfollow_user_url(user) do %>
+		<%= submit_tag 'Dejar de seguir', :class => 'btn btn-default' %>
+	<% end %>
+<% end %>

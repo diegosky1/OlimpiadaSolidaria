@@ -1,0 +1,39 @@
+<div class="page-header">
+	<h1>Universidades</h1>
+</div>
+
+<div class="space-bottom">
+<% if @universities.any? %>
+	<table class="table table-stripped">
+		<thead>
+			<tr>
+				<th>Nombre</th>
+				<th>Usuarios</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<% @universities.each do |university| %>
+				<tr>
+					<td><%= link_to university.name, master_university_url(university) %></td>
+					<td><%= university.users.count(:id) %></td>
+					<td>
+						<%= link_to 'Editar', edit_master_university_url(university), :class => 'btn btn-default btn-xs' %>
+						<%= link_to 'Eliminar', master_university_url(university), :class => 'btn btn-danger btn-xs',
+							data: {
+								confirm: '¿Estas seguro?',
+								method: 'delete'
+							}
+						 %>
+					</td>
+				</tr>
+			<% end %>
+		</tbody>
+	</table>
+<% else %>
+	<p class="well">
+		No se han encontrado universidades
+	</p>
+<% end %>
+<%= link_to 'Agregar', new_master_university_url, :class => 'btn btn-primary' %>
+</div>

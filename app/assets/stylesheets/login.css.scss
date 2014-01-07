@@ -1,0 +1,36 @@
+body {
+	background-color: #fafafa;
+
+}
+
+#login-dialog {
+	max-width: 380px;
+}
+
+form#sign-in input[type="text"] {
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+form#sign-in input[type="password"] {
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+	margin-top: -1px;
+}
+
+form#sign-in input[type="submit"] {	
+	margin-top: 20px;
+}
+
+form#sign-in .form-control {
+	font-size: 16px;
+	height: auto;
+	padding: 10px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.space-top {
+	margin-top: 20px;
+}

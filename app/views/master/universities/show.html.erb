@@ -1,0 +1,28 @@
+<h1><%= @university.name %></h1>
+<% if @university.users.any? %>
+	<table class="table-stripped table">
+		<thead>
+			<tr>
+				<th>Nombre</th>
+				<th>Email</th>
+				<th>Sexo</th>
+				<th>Edad</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% @university.users.each do |user| %>
+				<tr>
+					<td><%= user.full_name %></td>
+					<td><%= user.email %></td>
+					<td><%= user.gender %></td>
+					<td><%= user.age %></td>
+				</tr>
+			<% end %>
+		</tbody>
+	</table>
+<% else %>
+	<p class="well">
+		No se han registrado usuarios
+	</p>
+<% end %>
+<%= link_to 'Regresar', master_universities_url, :class => 'btn btn-default' %>

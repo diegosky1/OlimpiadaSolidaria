@@ -1,0 +1,41 @@
+<div class="page-header">
+	<h1>Administradores</h1>
+</div>
+
+<div class="space-bottom">
+<% if @admins.any? %>
+	<table class="table table-stripped">
+		<thead>
+			<tr>
+				<th>Nombre</th>
+				<th>Email</th>
+				<th>Universidad</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<% @admins.each do |admin| %>
+				<tr>
+					<td><%= admin.full_name%></td>
+					<td><%= admin.email %></td>
+					<td><%= admin.university.name %></td>
+					<td>
+						<%= link_to 'Editar', edit_master_admin_url(admin), :class => 'btn btn-default btn-xs' %>
+						<%= link_to 'Eliminar', master_admin_url(admin), :class => 'btn btn-danger btn-xs',
+							data: {
+								confirm: '¿Estas seguro?',
+								method: 'delete'
+							}
+						 %>
+					</td>
+				</tr>
+			<% end %>
+		</tbody>
+	</table>
+<% else %>
+	<p class="well">
+		No se han encontrado administradores
+	</p>
+<% end %>
+<%= link_to 'Agregar', new_master_admin_url, :class => 'btn btn-primary' %>
+</div>
